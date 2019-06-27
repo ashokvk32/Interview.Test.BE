@@ -147,7 +147,7 @@ namespace GraduationTracker.Tests.Unit
         }
 
         [TestMethod]
-        public void TestHasGraduated_WhenStudentHasGraduateWithAvgStanding()
+        public void TestHasGraduated_WhenStudentHasGraduatedWithAvgStanding()
         {
             var tracker = new GraduationTracker(_requirementRepository);
             var student = new Student
@@ -170,14 +170,14 @@ namespace GraduationTracker.Tests.Unit
 
         [TestMethod]
         [ExpectedException(typeof(Exception))]
-        public void TestHasGraduatedWithNullInput()
+        public void TestHasGraduated_WithNullInput()
         {
             var tracker = new GraduationTracker(_requirementRepository);
             tracker.HasGraduated(null, _students[1]);
         }
 
         [TestMethod]
-        public void TestGetRequirementsWhenDiplomaIsNull()
+        public void TestGetRequirements_WhenDiplomaReqsIsNull()
         {
             var tracker = new GraduationTracker(_requirementRepository);
 
@@ -193,7 +193,7 @@ namespace GraduationTracker.Tests.Unit
         }
 
         [TestMethod]
-        public void TestGetRequirementsForDiploma()
+        public void TestGetRequirements_ForDiploma()
         {
             var tracker = new GraduationTracker(_requirementRepository);
 
@@ -204,7 +204,7 @@ namespace GraduationTracker.Tests.Unit
         }
 
         [TestMethod]
-        public void TestStudentGradeWhenRequirementHasNoCourses()
+        public void TestStudentGradeWhenRequirement_HasNoCourses()
         {
             var tracker = new GraduationTracker(_requirementRepository);
 
@@ -221,7 +221,7 @@ namespace GraduationTracker.Tests.Unit
         }
 
         [TestMethod]
-        public void TestStudentGradeForRequirement()
+        public void TestStudentGrade_ForRequirement()
         {
             var tracker = new GraduationTracker(_requirementRepository);
 

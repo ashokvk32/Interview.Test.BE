@@ -52,7 +52,7 @@ namespace GraduationTracker
             // Student has graduated only if both conditions are true. Has enough credits and has average >= 50
             var hasGraduated = hasGoodAverageToGraduate && hasEnoughCreditsToGraduate;
             // Get the standing
-            var standing = GetStandingForAverageMarks(average);
+            var standing = GetStandingForMarks(average);
 
             // Return as before
             return new StudentStatus
@@ -68,7 +68,7 @@ namespace GraduationTracker
         /// </summary>
         /// <param name="average">Marks value</param>
         /// <returns>Enum indicating student standing</returns>
-        public Standing GetStandingForAverageMarks(int average)
+        public Standing GetStandingForMarks(int average)
         {
             // Both cases: average < 95 and >= 95 where given MagnaCumLaude. One of them should be SumaCumLaude
             // < 95 is MagnaCumLaude and >= 95 is SumaCumLaude
