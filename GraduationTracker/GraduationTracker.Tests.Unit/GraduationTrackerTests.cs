@@ -94,14 +94,78 @@ namespace GraduationTracker.Tests.Unit
                 graduated.Add(tracker.HasGraduated(_diploma, student));      
             }
 
-            // Changing it to true makes the test pass but not sure what the test is trying to accomplish
+            // Changing it to true makes the test pass
             // This test just checks that the HasGraduated method executed successfully (without throwing an exception) for the input
             // There is no check related to the credits as the test name alludes to
             Assert.IsTrue(graduated.Any());
 
             // Checks if any of the students has enough credits to graduate
-            // 
             Assert.IsTrue(graduated.Any(x => x.HasGraduated));
+        }
+
+        [TestMethod]
+        public void TestHasGraduated_WhenStudentHasInsufficentCredits()
+        {
+            var tracker = new GraduationTracker(_requirementRepository);
+            var student = new Student
+            {
+                Id = 1,
+                Courses = new List<Course>
+                {
+                    new Course {Id = 1, Name = "Math", Mark = 95},
+                    new Course {Id = 2, Name = "Science", Mark = 95},
+                    new Course {Id = 3, Name = "Literature", Mark = 95}
+                }
+            };
+
+            var result = tracker.HasGraduated(_diploma, student);
+
+            Assert.IsFalse(result.HasGraduated);
+            Assert.AreEqual(Standing.SumaCumLaude, result.CurrentStanding);
+        }
+
+        [TestMethod]
+        public void TestHasGraduated_WhenStudentHasPoorStanding()
+        {
+            var tracker = new GraduationTracker(_requirementRepository);
+            var student = new Student
+            {
+                Id = 1,
+                Courses = new List<Course>
+                {
+                    new Course {Id = 1, Name = "Math", Mark = 40},
+                    new Course {Id = 2, Name = "Science", Mark = 40},
+                    new Course {Id = 3, Name = "Literature", Mark = 40},
+                    new Course {Id = 4, Name = "Physical Education", Mark = 40}
+                }
+            };
+
+            var result = tracker.HasGraduated(_diploma, student);
+
+            Assert.IsFalse(result.HasGraduated);
+            Assert.AreEqual(Standing.Remedial, result.CurrentStanding);
+        }
+
+        [TestMethod]
+        public void TestHasGraduated_WhenStudentHasGraduateWithAvgStanding()
+        {
+            var tracker = new GraduationTracker(_requirementRepository);
+            var student = new Student
+            {
+                Id = 1,
+                Courses = new List<Course>
+                {
+                    new Course {Id = 1, Name = "Math", Mark = 75},
+                    new Course {Id = 2, Name = "Science", Mark = 75},
+                    new Course {Id = 3, Name = "Literature", Mark = 75},
+                    new Course {Id = 4, Name = "Physical Education", Mark = 75}
+                }
+            };
+
+            var result = tracker.HasGraduated(_diploma, student);
+
+            Assert.IsTrue(result.HasGraduated);
+            Assert.AreEqual(Standing.Average, result.CurrentStanding);
         }
 
         [TestMethod]
