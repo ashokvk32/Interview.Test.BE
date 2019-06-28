@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace GraduationTracker
 {
-    public class Repository
+    /// <summary>
+    /// This implementation has more than one responsibility. It handles student, diploma and requirement data in here.
+    /// Better to have their own repositories and have it implement based on an interface for dependency injection, separation of concerns
+    /// and unit testing.
+    /// Finally, the GraduationTracker as it stands does not need student and diploma repositories.
+    /// Its better to have it implement just what it requires and that being Requirements
+    /// </summary>
+
+    public class Repository_Old
     {
         public static Student GetStudent(int id)
         {

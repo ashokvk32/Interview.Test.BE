@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace GraduationTracker
 {
@@ -10,6 +6,6 @@ namespace GraduationTracker
     {
         public int Id { get; set; }
         public int Credits { get; set; }
-        public int[] Requirements { get; set; }
+        public List<int> Requirements { get; set; }
     }
 }
