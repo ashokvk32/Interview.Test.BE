@@ -19,20 +19,20 @@ namespace GraduationTracker
            _requirementRepo = requirementRepo;
         }
 
-        public StudentStatus HasGraduated(Diploma diploma, Student student)
+        /// <summary>
+        /// Determines if a student has graduated having met the diploma requirements
+        /// </summary>
+        /// <param name="diploma">Diploma instance</param>
+        /// <param name="student">Student instance</param>
+        /// <returns>Returns true if student has graduated else false</returns>
+        public bool HasGraduated(Diploma diploma, Student student)
         {
             var credits = 0;
             var marks = 0;
 
-            if (diploma == null)
-            {
-                throw new Exception("Diploma cannot be null");
-            }
+            if (diploma == null) { throw new ArgumentNullException(nameof(diploma)); }
 
-            if (student == null)
-            {
-                throw new Exception("Student cannot be null");
-            }
+            if (student == null) { throw new ArgumentNullException(nameof(student)); }
 
             //Refactored the logic to avoid having multiple nested loops and to put some of the logic in their own methods so that it can be unit tested
             var requirements = GetRequirementsForDiploma(diploma);
@@ -51,16 +51,10 @@ namespace GraduationTracker
             var hasGoodAverageToGraduate = average < 50 ? false : true;
             // Student has graduated only if both conditions are true. Has enough credits and has average >= 50
             var hasGraduated = hasGoodAverageToGraduate && hasEnoughCreditsToGraduate;
-            // Get the standing
-            var standing = GetStandingForMarks(average);
-
-            // Return as before
-            return new StudentStatus
-            {
-                HasGraduated = hasGraduated,
-                CurrentStanding = standing
-            };
-
+            // Since the student class has the property standing, there is no need to return it as part of the tuple. 
+            student.Standing = GetStandingForMarks(average);
+            
+            return hasGraduated;
         }
 
         /// <summary>
@@ -128,7 +122,7 @@ namespace GraduationTracker
             {
                 return;
             }
-
+            
             var coursesInReq = requirement.Courses;
             foreach (var id in coursesInReq)
             {

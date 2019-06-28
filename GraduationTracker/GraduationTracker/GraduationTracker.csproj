@@ -53,7 +53,6 @@
     <Compile Include="Repository\StudentRepository.cs" />
     <Compile Include="Requirement.cs" />
     <Compile Include="Student.cs" />
-    <Compile Include="StudentStatus.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

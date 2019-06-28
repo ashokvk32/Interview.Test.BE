@@ -87,24 +87,21 @@ namespace GraduationTracker.Tests.Unit
         {
             var tracker = new GraduationTracker(_requirementRepository);
 
-            var graduated = new List<StudentStatus>();
+            var graduated = new List<bool>();
 
             foreach(var student in _students)
             {
                 graduated.Add(tracker.HasGraduated(_diploma, student));      
             }
 
-            // Changing it to true makes the test pass
-            // This test just checks that the HasGraduated method executed successfully (without throwing an exception) for the input
-            // There is no check related to the credits as the test name alludes to
+            // This test previously just checked that the HasGraduated method executed successfully (without throwing an exception) for the input
+            // There was no check related to the credits as the test name alludes to
+            // Now it tests if any of students has graduated and one can graduate only if the diploma credits requirement are met
             Assert.IsTrue(graduated.Any());
-
-            // Checks if any of the students has enough credits to graduate
-            Assert.IsTrue(graduated.Any(x => x.HasGraduated));
         }
 
         [TestMethod]
-        public void TestHasGraduated_WhenStudentHasInsufficentCredits()
+        public void TestHasGraduated_WhenStudentHasInsufficientCredits()
         {
             var tracker = new GraduationTracker(_requirementRepository);
             var student = new Student
@@ -118,10 +115,10 @@ namespace GraduationTracker.Tests.Unit
                 }
             };
 
-            var result = tracker.HasGraduated(_diploma, student);
+            var hasGraduated = tracker.HasGraduated(_diploma, student);
 
-            Assert.IsFalse(result.HasGraduated);
-            Assert.AreEqual(Standing.SumaCumLaude, result.CurrentStanding);
+            Assert.IsFalse(hasGraduated);
+            Assert.AreEqual(Standing.SumaCumLaude, student.Standing);
         }
 
         [TestMethod]
@@ -140,10 +137,10 @@ namespace GraduationTracker.Tests.Unit
                 }
             };
 
-            var result = tracker.HasGraduated(_diploma, student);
+            var hasGraduated = tracker.HasGraduated(_diploma, student);
 
-            Assert.IsFalse(result.HasGraduated);
-            Assert.AreEqual(Standing.Remedial, result.CurrentStanding);
+            Assert.IsFalse(hasGraduated);
+            Assert.AreEqual(Standing.Remedial, student.Standing);
         }
 
         [TestMethod]
@@ -162,14 +159,14 @@ namespace GraduationTracker.Tests.Unit
                 }
             };
 
-            var result = tracker.HasGraduated(_diploma, student);
+            var hasGraduated = tracker.HasGraduated(_diploma, student);
 
-            Assert.IsTrue(result.HasGraduated);
-            Assert.AreEqual(Standing.Average, result.CurrentStanding);
+            Assert.IsTrue(hasGraduated);
+            Assert.AreEqual(Standing.Average, student.Standing);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void TestHasGraduated_WithNullInput()
         {
             var tracker = new GraduationTracker(_requirementRepository);
